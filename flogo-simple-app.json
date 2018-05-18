@@ -10,7 +10,7 @@
       "name": "RESTInterface",
       "description": "Simple REST Trigger",
       "settings": {
-        "port": "8070"
+        "port": "80"
       },
       "handlers": [
         {
