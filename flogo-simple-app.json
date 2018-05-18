@@ -1,0 +1,121 @@
+{
+  "name": "flogo-simple-app",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "appModel": "1.0.0",
+  "triggers": [
+    {
+      "id": "rest_interface",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/trigger/rest",
+      "name": "RESTInterface",
+      "description": "Simple REST Trigger",
+      "settings": {
+        "port": "8070"
+      },
+      "handlers": [
+        {
+          "action": {
+            "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+            "data": {
+              "flowURI": "res://flow:hello_world"
+            },
+            "mappings": {
+              "input": [
+                {
+                  "mapTo": "Name",
+                  "type": "assign",
+                  "value": "$.pathParams.name"
+                }
+              ],
+              "output": [
+                {
+                  "mapTo": "code",
+                  "type": "literal",
+                  "value": 200
+                },
+                {
+                  "mapTo": "data",
+                  "type": "object",
+                  "value": { "Greetings": "{{$.Greeting}}"}
+                }
+              ]
+            }
+          },
+          "settings": {
+            "method": "GET",
+            "path": "/hello/:name"
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "flow:hello_world",
+      "data": {
+        "name": "HelloWorld",
+        "metadata": {
+          "input": [
+            {
+              "name": "Name",
+              "type": "string"
+            }
+          ],
+          "output": [
+            {
+              "name": "Greeting",
+              "type": "string"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "id": "log_2",
+            "name": "Log Message",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "message": "",
+                "flowInfo": "false",
+                "addToFlow": "false"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "assign",
+                    "value": "$flow.Name",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "actreply_3",
+            "name": "Reply To Trigger",
+            "description": "Simple Reply Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
+              "input": {
+                "mappings": [
+                  {
+                    "mapTo": "Greeting",
+                    "type": "expression",
+                    "value": "string.concat(\"Welcome to Project Flogo, \", $flow.Name, \". My name is Flynn !\")"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "links": [
+          {
+            "from": "log_2",
+            "to": "actreply_3"
+          }
+        ]
+      }
+    }
+  ]
+}

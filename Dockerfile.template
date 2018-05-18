@@ -1,0 +1,22 @@
+FROM resin/%%RESIN_MACHINE_NAME%%-golang:slim
+
+ENV INITSYSTEM on
+ENV FLOGO_APP_FILE flogo-simple-app.json
+ENV FLOGO_APP_NAME flogo-simple-app
+
+RUN go get -u github.com/golang/dep/cmd/dep
+RUN go get -u github.com/TIBCOSoftware/flogo-cli/...
+
+WORKDIR $GOPATH/src/flogo-app
+
+COPY $FLOGO_APP_FILE ./
+
+RUN flogo create -f $FLOGO_APP_FILE
+
+WORKDIR $GOPATH/src/flogo-app/$FLOGO_APP_NAME
+
+RUN flogo build -o -e
+
+EXPOSE 8070/tcp
+
+CMD bin/$FLOGO_APP_NAME
