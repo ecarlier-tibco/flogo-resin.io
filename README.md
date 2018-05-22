@@ -1,16 +1,21 @@
 # Use resin.io to provision your flogo app on end IoT device
 
+### IoT Simplified
+
+Use **Project Flogo** to develop IoT Edge application with no code using the Graphical development web UI, and then **resin.io** to push your code, and have it deploy automatically to a float of devices
+
+## Flogo instructions
+
 For more information on Flogo, Visit http://flogo.io.
 
 You will learn how to build Flogo applications with the Flogo graphical Web UI.
+Once you've developed an application using Flogo Web UI, you can export it as a JSON file, and use this JSON file to version control your application with git.
 
-Here, my simple application is described in the flogo-simple-app.json file
+Here, my simple application was exported and is described in the flogo-simple-app.json file
 
-This app is a simple REST Server :
-
-It accepts GET request on /hello/[Your_Name] and then replies with a greetings sentence like 
+This app is a simple REST Server accepting GET requests on /hello/[Any_Name] path and replying with a greetings sentence in a JSON payload: 
 ```
-{"Greetings":"Welcome to Project Flogo, [Your_Name]. My name is Flynn !"}
+{"Greetings":"Welcome to Project Flogo, [Any_Name]. My name is Flynn !"}
 ````
 
 ## Resin.io instructions
